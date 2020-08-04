@@ -1,0 +1,21 @@
+<h1>Mon app de cocktails !!</h1>
+
+<div class="cards w-100">
+  <div class="row">
+    <% @cocktails.each do |cocktail| %>
+      <div class="col-md-4">
+        <div class="card">
+          <!-- <img src="..." class="card-img-top" alt="..."> -->
+          <div class="card-body">
+            <h5 class="card-title"><%= cocktail.name %></h5>
+            <%= link_to "voir #{cocktail.name }", cocktail_path(cocktail), class:"btn btn-primary" %>
+            <%= link_to "Delete", cocktail_path(cocktail), method: :delete, class:"btn btn-danger", data: { confirm: "Are you sure ? "} %>
+          </div>
+        </div>
+      </div>
+    <% end  %>
+  </div>
+</div>
+
+
+
