@@ -8,6 +8,9 @@
           <!-- <img src="..." class="card-img-top" alt="..."> -->
           <div class="card-body">
             <h5 class="card-title"><%= cocktail.name %></h5>
+            <% if cocktail.photo.present? %>
+              <%= cl_image_tag cocktail.photo.key, height: 300, width: 300, crop: :fill %>
+            <% end  %>
             <%= link_to "voir #{cocktail.name }", cocktail_path(cocktail), class:"btn btn-primary" %>
             <%= link_to "Delete", cocktail_path(cocktail), method: :delete, class:"btn btn-danger", data: { confirm: "Are you sure ? "} %>
           </div>
