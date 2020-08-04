@@ -4,7 +4,29 @@
     <li>
       <p><%= dose.ingredient.name %> <%= dose.description %></p>
     </li>
+    <%= link_to "delete", dose_path(dose), method: :delete, class:"btn btn-danger", data: { confirm: "Are you sure ?"} %>
   <% end %>
 </ul>
-<%= link_to "Add Dose", new_cocktail_dose_path(@cocktail), class:"btn btn-primary" %>
 <%= link_to "Back", root_path, class:"btn btn-secondary" %>
+
+<h2>Reviews</h2>
+<% @cocktail.reviews.each do |review| %>
+  <h3>Review</h3>
+  <p><%= review.content %></p>
+  <p>Rating : <%= "*" * review.rating %></p>
+<% end %>
+
+<h2>Ajouter une dose</h2>
+
+<%= simple_form_for [@cocktail, @dose], remote: true do |f| %>
+  <%= f.input :description, collection: ["2cl", "3cl", "4cl", "5cl"] %>
+  <%= f.association :ingredient, input_html: { class: 'select2' } %>
+  <%= f.button :submit,class: "btn btn-primary" %>
+<% end %>
+
+<h2>Ajouter une review</h2>
+<%= simple_form_for [@cocktail, @review], remote: true do |f| %>
+  <%= f.input :content %>
+  <%= f.input :rating %>
+  <%= f.button :submit,class: "btn btn-primary" %>
+<% end %>
