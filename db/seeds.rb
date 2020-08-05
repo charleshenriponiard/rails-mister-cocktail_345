@@ -1,16 +1,10 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
 require 'json'
 require 'open-uri'
 
 puts "Clean DB"
 
 Dose.destroy_all
+Review.destroy_all
 Ingredient.destroy_all
 Cocktail.destroy_all
 
@@ -25,26 +19,26 @@ ingredients['drinks'].each do |ingredient|
 end
 
 puts "Create Cocktail"
-cocktails = ["Mojito",
-  "Long Island Iced Tea",
-  "Manhattan",
-  "Daiquiri",
-  "Margarita",
-  "Bloody Mary",
-  "Cosmopolitan",
-  "Tom Collins",
-  "Moscow Mule",
-  "Screwdriver",
-  "Hurricane",
-  "Martini",
-  "Tequila Sunrise"
-]
-cocktails.each do |cocktail|
-  Cocktail.create!(
-    name: cocktail
-  )
+
+def handle_string_io_as_file(io, filename)
+  return io unless io.class == StringIO
+  file = Tempfile.new(["temp",".png"], encoding: 'ascii-8bit')
+  file.binmode
+  file.write io.read
+  file.open
 end
 
+url = 'https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=Cocktail'
+cocktail_ids_serialized = open(url).read
+cocktails = JSON.parse(cocktail_ids_serialized)
+cocktails["drinks"].take(10).each do |cocktail|
+  element = Cocktail.create!(
+    name: cocktail["strDrink"]
+  )
+  img = URI.open(cocktail["strDrinkThumb"])
+  element.photo.attach(io: handle_string_io_as_file(img, "#{cocktail["strDrink"].gsub('', '_')}.jpg" ), filename: "#{cocktail["strDrink"].gsub('', '_')}.jpg", content_type: 'image/jpg')
+end
+
+
+
 puts "Seed OK"
-
-

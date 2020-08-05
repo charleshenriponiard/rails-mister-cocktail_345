@@ -11,12 +11,15 @@ require("channels")
 import 'bootstrap';
 
 import { initSelect2 } from "../plugins/init_select2";
+
 import { type } from "../plugins/init_type"
+import AOS from 'aos';
 
 
 document.addEventListener('turbolinks:load', () => {
     initSelect2();
     type();
+    AOS.init();
   });
 
 // Uncomment to copy all static images under ../images to the output folder and reference
