@@ -1,4 +1,13 @@
-<h1>Mon app de cocktails !!</h1>
+<h1 class="header"></h1>
+
+<div class="search">
+<%= simple_form_for :querry, url: root_path, method: :get, html: { class: 'form-inline' } do |f| %>
+  <%= f.input :search, label: false %>
+  <%= f.button :submit, class: "btn btn-primary" %>
+  <%= link_to "delete filters", root_path, class: "btn btn-secondary" %>
+
+<% end  %>
+</div>
 
 <div class="cards w-100">
   <div class="row">
