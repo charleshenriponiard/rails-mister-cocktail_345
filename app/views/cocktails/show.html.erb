@@ -1,32 +1,49 @@
-<h1><%= @cocktail.name %></h1>
+<div class="banner" style="background-image: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)),  url(<%= cl_image_path @cocktail.photo.key%>);background-size: cover;
+  background-repeat: no-repeat; height: 400px">
+  <div class="container">
+    <h1><%= @cocktail.name %></h1>
+    <p>Change your life and learn to code at one of our campuses around the world.</p>
+    <%= link_to "Back", root_path, class:"btn btn-secondary" %>
+  </div>
+</div>
+
+<h2>Ingredients </h2>
 <ul>
   <% @cocktail.doses.each do |dose| %>
     <li>
-      <p><%= dose.ingredient.name %> <%= dose.description %></p>
+      <%= dose.ingredient.name %> <%= dose.description %> <%= link_to "delete", dose_path(dose), method: :delete, class:"btn btn-danger", data: { confirm: "Are you sure ?"} %>
     </li>
-    <%= link_to "delete", dose_path(dose), method: :delete, class:"btn btn-danger", data: { confirm: "Are you sure ?"} %>
+    
   <% end %>
 </ul>
-<%= link_to "Back", root_path, class:"btn btn-secondary" %>
 
 <h2>Reviews</h2>
-<% @cocktail.reviews.each do |review| %>
-  <h3>Review</h3>
-  <p><%= review.content %></p>
-  <p>Rating : <%= "*" * review.rating %></p>
+<% if @cocktail.reviews.count == 0 %>
+<p>Il n'y a pas de review pour ce cocktail</p>
+<% else %>
+  <% @cocktail.reviews.each do |review| %>
+    <p class="border-bottom"><b><%= "*" * review.rating %></b><%= review.content %></p>
+    <br/>
+  <% end %>
 <% end %>
 
-<h2>Ajouter une dose</h2>
 
-<%= simple_form_for [@cocktail, @dose] do |f| %>
-  <%= f.input :description, collection: ["2cl", "3cl", "4cl", "5cl"] %>
-  <%= f.association :ingredient, input_html: { class: 'select2' }, prompt: "Choose a Ingredient" %>
-  <%= f.button :submit,class: "btn btn-primary" %>
-<% end %>
+<div class="d-flex justify-content-around">
+  <div>
+    <h2>Ajouter une dose</h2>
+    <%= simple_form_for [@cocktail, @dose] do |f| %>
+      <%= f.input :description, collection: ["2cl", "3cl", "4cl", "5cl"] %>
+      <%= f.association :ingredient, input_html: { class: 'select2' }, prompt: "Choose a Ingredient" %>
+      <%= f.button :submit,class: "btn btn-primary" %>
+    <% end %>
+  </div>
+  <div>
+    <h2>Ajouter une review</h2>
+    <%= simple_form_for [@cocktail, @review], remote: true do |f| %>
+      <%= f.input :content %>
+      <%= f.input :rating %>
+      <%= f.button :submit,class: "btn btn-primary" %>
+    <% end %>
+  </div>
+</div>
 
-<h2>Ajouter une review</h2>
-<%= simple_form_for [@cocktail, @review], remote: true do |f| %>
-  <%= f.input :content %>
-  <%= f.input :rating %>
-  <%= f.button :submit,class: "btn btn-primary" %>
-<% end %>
