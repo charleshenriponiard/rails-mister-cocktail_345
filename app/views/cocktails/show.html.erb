@@ -18,9 +18,9 @@
 
 <h2>Ajouter une dose</h2>
 
-<%= simple_form_for [@cocktail, @dose], remote: true do |f| %>
+<%= simple_form_for [@cocktail, @dose] do |f| %>
   <%= f.input :description, collection: ["2cl", "3cl", "4cl", "5cl"] %>
-  <%= f.association :ingredient, input_html: { class: 'select2' } %>
+  <%= f.association :ingredient, input_html: { class: 'select2' }, prompt: "Choose a Ingredient" %>
   <%= f.button :submit,class: "btn btn-primary" %>
 <% end %>
 

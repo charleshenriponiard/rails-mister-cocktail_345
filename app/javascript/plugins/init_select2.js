@@ -5,7 +5,8 @@ import 'select2';
 
 const initSelect2 = () => {
   $('.select2').select2({ width: '100%', 
-                          theme: "bootstrap4"
+                          disabled: false,
+                          theme: 'classic'
                         });
 };
 
